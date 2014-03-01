@@ -4,7 +4,7 @@ public class Point implements IPoint {
 	private double x, y;	//location
 	private double charge;	//charge magnitude
 	
-	public Point(int x, int y) {
+	public Point(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
