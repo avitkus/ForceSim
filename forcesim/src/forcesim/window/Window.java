@@ -7,61 +7,58 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import forcesim.field.physics.IField;
 import forcesim.graphics.FieldPanel;
 
 
-public class Window {
+@SuppressWarnings("serial")
+public class Window extends JFrame implements Runnable {
 
-	private static final JFrame frame;
-	private static final JPanel canvas;
-
-	private static final JMenuBar menuBar;
-
-	static {
-		frame = new JFrame("Awesome Title");
-
-		frame.setSize(400,400);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		frame.setLocationByPlatform(true);
+	public Window() {
+		super("Awesome Title");
+	
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+		setLocationByPlatform(true);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 		}
-
-		canvas = new FieldPanel();
-		frame.add(canvas);
-
-		menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-
+	
+		add(new FieldPanel());
+	
+		buildMenuBar();
+			
+		//frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/GenSim icon large.png")));
+	}
+	
+	private void buildMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
 		JMenuItem temp;
 		
 		JMenu fileMenu = new JMenu("File");
 		temp = new JMenuItem("Save");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Save");//TODO
+				System.out.println("Save");
 			}
 		});
 		fileMenu.add(temp);
 		temp = new JMenuItem("Save As");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Save As");//TODO
+				System.out.println("Save As");
 			}
 		});
 		fileMenu.add(temp);
 		temp = new JMenuItem("Open");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Open");//TODO
+				System.out.println("Open");
 			}
 		});
 		fileMenu.add(temp);
@@ -72,7 +69,7 @@ public class Window {
 		temp = new JMenuItem("Save as PNG");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Save as PNG");//TODO
+				System.out.println("Save as PNG");
 			}
 		});
 		exportMenu.add(temp);
@@ -82,7 +79,7 @@ public class Window {
 		temp = new JMenuItem("Clear");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Clear");//TODO
+				System.out.println("Clear");
 			}
 		});
 		editMenu.add(temp);
@@ -93,7 +90,7 @@ public class Window {
 		temp = new JRadioButtonMenuItem("Display as lines");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				renderMode = RENDER_LINES;
+				WindowProperties.renderMode = WindowProperties.RENDER_LINES;
 			}
 		});
 		buttonGroup.add(temp);
@@ -101,45 +98,19 @@ public class Window {
 		temp = new JRadioButtonMenuItem("Display false color");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				renderMode = RENDER_FALSE_COLOR;
+				WindowProperties.renderMode = WindowProperties.RENDER_FALSE_COLOR;
 			}
 		});
 		temp.setSelected(true);
 		buttonGroup.add(temp);
 		viewMenu.add(temp);
 		menuBar.add(viewMenu);
-
-		//frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/GenSim icon large.png")));
-	}
-	
-	
-	
-
-	public static final int RENDER_FALSE_COLOR=1;
-	public static final int RENDER_LINES=2;
-	
-	private static int renderMode = RENDER_FALSE_COLOR;
-	
-	private static int scale = 40; // pixels per meter
-	
-	public static int getWidth() {
-		return canvas.getWidth();
-	}
-	public static int getHeight() {
-		return canvas.getHeight();
-	}
-	
-	private static final IField field = null; // TODO fixme
-	
-	public static int getRenderMode() {
-		return renderMode;
-	}
-	public static int getScale() {
-		return scale;
+		
+		setJMenuBar(menuBar);
 	}
 
-	public static void main(String[] args) {
-		frame.setVisible(true);
+	@Override
+	public void run() {
+		setVisible(true);
 	}
-
 }
