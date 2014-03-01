@@ -25,5 +25,9 @@ public class Field implements IField {
 		}
 		return field;
 	}
-
+	
+	@Override
+	public IPoint[] getPoints() {
+		return points.toArray(new IPoint[points.size()]);
+	}
 }

@@ -7,6 +7,7 @@ public class Point implements IPoint {
 	public Point(double x, double y) {
 		this.x = x;
 		this.y = y;
+		charge = 0;
 	}
 	
 	public void setCharge(double charge) {
