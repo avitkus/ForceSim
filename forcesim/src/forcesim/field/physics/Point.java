@@ -1,29 +1,27 @@
 package forcesim.field.physics;
 
 public class Point implements IPoint {
-
+	private double x, y;	//location
+	private double charge;	//charge magnitude
+	
 	@Override
 	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return x;
 	}
 
 	@Override
 	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return y;
 	}
 
 	@Override
-	public boolean isPositive() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isPositiveCharge() {
+		return charge > 0;
 	}
 
 	@Override
 	public double getCharge() {
-		// TODO Auto-generated method stub
-		return 0;
+		return charge;
 	}
 
 }

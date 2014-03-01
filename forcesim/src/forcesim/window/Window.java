@@ -1,8 +1,12 @@
 package forcesim.window;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 
 public class Window {
@@ -23,6 +27,15 @@ public class Window {
 		frame.setJMenuBar(menuBar);
 		
 		menuBar.add(new JLabel("lol"));
+		
+		frame.setLocationByPlatform(true);
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        }
+
+        //frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/GenSim icon large.png")));
 		
 		frame.setVisible(true);
 	}

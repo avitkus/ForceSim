@@ -4,6 +4,6 @@ public interface IPoint {
 	public double getX();
 	public double getY();
 
-	public boolean isPositive();
+	public boolean isPositiveCharge();
 	public double getCharge();
 }
