@@ -24,16 +24,6 @@ public class Point implements IPoint {
 	}
 
 	@Override
-	public boolean isPositiveCharge() {
-		return charge > 0;
-	}
-
-	@Override
-	public double getCharge() {
-		return charge;
-	}
-
-	@Override
 	public void setX(double x) {
 		this.x = x;
 	}
@@ -41,6 +31,16 @@ public class Point implements IPoint {
 	@Override
 	public void setY(double y) {
 		this.y = y;
+	}
+
+	@Override
+	public boolean isPositiveCharge() {
+		return charge > 0;
+	}
+
+	@Override
+	public double getCharge() {
+		return charge;
 	}
 
 	@Override

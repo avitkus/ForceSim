@@ -16,7 +16,7 @@ public class Field implements IField {
 	}
 	
 	@Override
-	public IVector2D getElectromagneticField(int x, int y) {
+	public IVector2D getElectromagneticField(double x, double y) {
 		IPoint test = new Point(x, y);
 		test.setCharge(1);
 		IVector2D field = new Vector2D(0,0);
