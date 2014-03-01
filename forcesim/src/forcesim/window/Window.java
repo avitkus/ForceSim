@@ -2,13 +2,17 @@ package forcesim.window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import forcesim.field.physics.IField;
 
 
 public class Window {
@@ -84,28 +88,38 @@ public class Window {
 		menuBar.add(editMenu);
 
 		JMenu viewMenu = new JMenu("View");
-		temp = new JMenuItem("Display as Lines");
+		ButtonGroup buttonGroup = new ButtonGroup();
+		temp = new JRadioButtonMenuItem("Display as lines");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Toggle Display");//TODO
+				renderMode = RENDER_LINES;
 			}
 		});
+		buttonGroup.add(temp);
+		viewMenu.add(temp);
+		temp = new JRadioButtonMenuItem("Display false color");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				renderMode = RENDER_FALSE_COLOR;
+			}
+		});
+		temp.setSelected(true);
+		buttonGroup.add(temp);
 		viewMenu.add(temp);
 		menuBar.add(viewMenu);
 
 		//frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/GenSim icon large.png")));
-
-		frame.setVisible(true);
 	}
 	
 	
 	
-	
-	
+
 	public static final int RENDER_FALSE_COLOR=1;
 	public static final int RENDER_LINES=2;
 	
 	private static int renderMode = RENDER_FALSE_COLOR;
+	
+	private static final IField field = null; // TODO fixme
 	
 	public static int getHeight() {
 		return canvas.getHeight(); 
@@ -118,7 +132,7 @@ public class Window {
 	}
 
 	public static void main(String[] args) {
-
+		frame.setVisible(true);
 	}
 
 }
