@@ -13,6 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import forcesim.field.physics.IField;
+import forcesim.graphics.FieldPanel;
 
 
 public class Window {
@@ -34,7 +35,7 @@ public class Window {
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 		}
 
-		canvas = new JPanel();
+		canvas = new FieldPanel();
 		frame.add(canvas);
 
 		menuBar = new JMenuBar();
@@ -119,16 +120,22 @@ public class Window {
 	
 	private static int renderMode = RENDER_FALSE_COLOR;
 	
-	private static final IField field = null; // TODO fixme
+	private static int scale = 40; // pixels per meter
 	
-	public static int getHeight() {
-		return canvas.getHeight(); 
-	}
 	public static int getWidth() {
 		return canvas.getWidth();
 	}
+	public static int getHeight() {
+		return canvas.getHeight();
+	}
+	
+	private static final IField field = null; // TODO fixme
+	
 	public static int getRenderMode() {
 		return renderMode;
+	}
+	public static int getScale() {
+		return scale;
 	}
 
 	public static void main(String[] args) {
