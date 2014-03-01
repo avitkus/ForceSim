@@ -10,6 +10,8 @@ public interface IPoint {
 	public boolean isPositiveCharge();
 	public double getCharge();
 	
+	public void setCharge(double charge);
+	
 	public double getDistanceTo(IPoint p);
 	public double getAngleTo(IPoint p);
 }

@@ -4,6 +4,15 @@ public class Point implements IPoint {
 	private double x, y;	//location
 	private double charge;	//charge magnitude
 	
+	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void setCharge(double charge) {
+		this.charge = charge;
+	}
+	
 	@Override
 	public double getX() {
 		return x;
@@ -41,11 +50,7 @@ public class Point implements IPoint {
 
 	@Override
 	public double getAngleTo(IPoint p) {
-		double dx = x - p.getX();
-		double dy = y - p.getY();
-		double atan = Math.atan((dx)/(dy));
-		if (dy < 0);
-		return 0;
+		return Math.atan2(y - p.getY(), x - p.getX());
 	}
 
 }
