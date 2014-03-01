@@ -44,7 +44,8 @@ public class Point implements IPoint {
 		double dx = x - p.getX();
 		double dy = y - p.getY();
 		double atan = Math.atan((dx)/(dy));
-		return 
+		if (dy < 0);
+		return 0;
 	}
 
 }
