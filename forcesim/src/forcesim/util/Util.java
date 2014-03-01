@@ -3,19 +3,20 @@ package forcesim.util;
 import forcesim.field.physics.IPoint;
 import forcesim.field.physics.Point;
 import forcesim.field.physics.Vector2D;
-import forcesim.window.Window;
+import forcesim.graphics.FieldPanel;
+import forcesim.window.WindowProperties;
 
 public class Util {
-	public static Vector2D convertFieldCoordinate(IPoint p) {
+	public static Vector2D convertFieldCoordinate(FieldPanel fp, IPoint p) {
 		return new Vector2D(
-				p.getX()*Window.getScale() + Window.getWidth()/2,
-				p.getY()*Window.getScale() + Window.getHeight()/2
+				p.getX()*WindowProperties.scale + fp.getWidth()/2,
+				p.getY()*WindowProperties.scale + fp.getHeight()/2
 				);
 	}
-	public static Point convertPixelCoordinate(int x, int y) {
+	public static Point convertPixelCoordinate(FieldPanel fp, int x, int y) {
 		return new Point(
-				(x-Window.getWidth()/2)/(double)Window.getScale(),
-				(y-Window.getHeight()/2)/(double)Window.getScale()
+				(x-fp.getWidth()/2)/(double)WindowProperties.scale,
+				(y-fp.getHeight()/2)/(double)WindowProperties.scale
 				);
 	}
 }
