@@ -1,4 +1,5 @@
 package forcesim.window;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,7 +23,7 @@ public class Window extends JFrame implements Runnable {
 	
 		setSize(400,400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
+		System.out.println("");
 		setLocationByPlatform(true);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -33,7 +34,7 @@ public class Window extends JFrame implements Runnable {
 	
 		buildMenuBar();
 			
-		//frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/GenSim icon large.png")));
+		//setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/1-.png")));
 	}
 	
 	private void buildMenuBar() {

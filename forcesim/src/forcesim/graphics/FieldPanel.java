@@ -70,8 +70,8 @@ public class FieldPanel extends JPanel {
 			for (int y=0; y<getHeight(); y++) {
 				//System.out.println(charges[x][y]);
 				if (charges[x][y] < maxCharge) {
-					float cor = (float)(charges[x][y]/maxCharge);
-					//float cor = (float)Math.sqrt(Math.log10(9*(charges[x][y]/maxCharge)+1));
+					//float cor = (float)(charges[x][y]/maxCharge);
+					float cor = (float)Math.log10(9*Math.sqrt(Math.log10(9*(charges[x][y]/maxCharge)+1))+1);
 					g.setColor(new Color(1f,1f-cor,1f-cor));
 					g.drawLine(x, y, x, y);
 				}
