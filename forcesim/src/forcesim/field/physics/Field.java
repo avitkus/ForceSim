@@ -16,6 +16,11 @@ public class Field implements IField {
 	}
 	
 	@Override
+	public void removePoint(IPoint p) {
+		points.remove(p);
+	}
+	
+	@Override
 	public IVector2D getElectromagneticField(double x, double y) {
 		IPoint test = new Point(x, y);
 		test.setCharge(1);
