@@ -58,7 +58,7 @@ public class FieldSaveFileReader {
 					WindowProperties.scale = Integer.parseInt(values[i]);
 					break;
 				case "currentChargeChoice":
-					WindowProperties.currentChargeChoice = Integer.parseInt(values[i]);
+					WindowProperties.currentChargeChoice = Double.parseDouble(values[i]);
 					break;
 				case "displayGrid":
 					WindowProperties.displayGrid = Boolean.parseBoolean(values[i]);

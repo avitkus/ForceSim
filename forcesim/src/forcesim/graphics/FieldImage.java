@@ -22,6 +22,14 @@ public class FieldImage {
 		return img.getRGB(x, y);
 	}
 	
+	public static int getWidth() {
+		return img.getWidth();
+	}
+	
+	public static int getHeight() {
+		return img.getHeight();
+	}
+	
 	public static BufferedImage getImage() {
 		return img;
 	}
