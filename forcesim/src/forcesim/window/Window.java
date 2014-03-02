@@ -6,11 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -46,6 +48,16 @@ public class Window extends JFrame implements Runnable {
 		JMenuItem temp;
 		
 		JMenu fileMenu = new JMenu("File");
+		temp = new JMenuItem("New");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("New");
+			}
+		});
+		fileMenu.add(temp);
+
+		fileMenu.add(new JSeparator());
+		
 		temp = new JMenuItem("Save");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -60,6 +72,9 @@ public class Window extends JFrame implements Runnable {
 			}
 		});
 		fileMenu.add(temp);
+
+		fileMenu.add(new JSeparator());
+		
 		temp = new JMenuItem("Open");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -81,6 +96,18 @@ public class Window extends JFrame implements Runnable {
 		menuBar.add(exportMenu);
 
 		JMenu editMenu = new JMenu("Edit");
+		final JCheckBoxMenuItem snapToGridItem = new JCheckBoxMenuItem("Snap to grid lines");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WindowProperties.snapToGrid = snapToGridItem.isSelected();
+				System.out.println("Snap to grid lines");
+				repaint();
+			}
+		});
+		editMenu.add(snapToGridItem);
+		
+		editMenu.add(new JSeparator());
+		
 		temp = new JMenuItem("Clear");
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,6 +118,18 @@ public class Window extends JFrame implements Runnable {
 		menuBar.add(editMenu);
 
 		JMenu viewMenu = new JMenu("View");
+		final JCheckBoxMenuItem showGridLineItem = new JCheckBoxMenuItem("Show grid lines");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WindowProperties.displayGrid = showGridLineItem.isSelected();
+				System.out.println("Toggle dem grid lines");
+				repaint();
+			}
+		});
+		viewMenu.add(showGridLineItem);
+
+		viewMenu.add(new JSeparator());
+		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		temp = new JRadioButtonMenuItem("Display as lines");
 		temp.addActionListener(new ActionListener() {
@@ -110,15 +149,6 @@ public class Window extends JFrame implements Runnable {
 		buttonGroup.add(temp);
 		viewMenu.add(temp);
 		
-		temp = new JMenuItem("Show grid lines");
-		temp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				WindowProperties.displayGrid = !WindowProperties.displayGrid;
-				System.out.println("Toggle dem grid lines");
-				repaint();
-			}
-		});
-		viewMenu.add(temp);
 		menuBar.add(viewMenu);
 		
 		setJMenuBar(menuBar);
