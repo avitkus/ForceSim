@@ -85,6 +85,7 @@ public class FieldPanel extends JPanel {
 			renderLine(g, l);
 		}
 	}
+	
 	private void renderLine(Graphics g, IVector2D vf1) {
 		g.setColor(Color.black);
 		IVector2D vclone = vf1;
@@ -93,7 +94,7 @@ public class FieldPanel extends JPanel {
 		IVector2D vp2 = Util.convertFieldCoordinate(this, vf2);
 		while (isValid(vp1)) {
 			IVector2D v = field.getElectromagneticField(vf1.getX(), vf1.getY());
-			v = v.scale(.05/v.getMagnitude());
+			v = v.scale(.025/v.getMagnitude());
 			vf2 = vf1.sum(v);
 			vp1 = Util.convertFieldCoordinate(this, vf1);
 			vp2 = Util.convertFieldCoordinate(this, vf2);
@@ -104,7 +105,7 @@ public class FieldPanel extends JPanel {
 		vp1 = Util.convertFieldCoordinate(this, vf1);
 		while (isValid(vp1)) {
 			IVector2D v = field.getElectromagneticField(vf1.getX(), vf1.getY());
-			v = v.scale(-.05/v.getMagnitude());
+			v = v.scale(-.025/v.getMagnitude());
 			vf2 = vf1.sum(v);
 			vp1 = Util.convertFieldCoordinate(this, vf1);
 			vp2 = Util.convertFieldCoordinate(this, vf2);
@@ -112,6 +113,7 @@ public class FieldPanel extends JPanel {
 			vf1 = vf2;
 		}
 	}
+	
 	private boolean isValid (IVector2D v) {
 		if (!(0 < v.getX() && v.getX() < getWidth()) && (0 < v.getY() && v.getY() < getWidth())) return false;
 		for (IPoint p : field.getPoints()) {
