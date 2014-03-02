@@ -17,10 +17,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import forcesim.graphics.FieldPanel;
+
 @SuppressWarnings("serial")
 public class DefaultPointPanel extends JPanel {
+	
+	private FieldPanel fieldPanel;
     
-    public DefaultPointPanel() {
+    public DefaultPointPanel(FieldPanel fieldPanel) {
+    	this.fieldPanel = fieldPanel;
         setLayout(new GridBagLayout());
         switch (WindowProperties.type) {
         	case ELECTROMAGNETIC:
@@ -82,6 +87,7 @@ public class DefaultPointPanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				WindowProperties.renderMode = WindowProperties.RENDER_LINES;
 				WindowProperties.drawingPoints = false;
+				fieldPanel.repaint();
 			}
     	});
 		buttons.add(button);
@@ -93,6 +99,7 @@ public class DefaultPointPanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				WindowProperties.renderMode = WindowProperties.RENDER_FALSE_COLOR;
 				WindowProperties.drawingPoints = true;
+				fieldPanel.repaint();
 			}
     	});
 		buttons.add(button);

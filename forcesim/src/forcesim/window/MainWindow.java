@@ -51,7 +51,7 @@ public class MainWindow extends JFrame implements Runnable {
         fieldPanel = new FieldPanel();
         
         addComponent(fieldPanel, 1, 0, 0);
-        addComponent(new DefaultPointPanel(), 0, 0, 4);
+        addComponent(new DefaultPointPanel(fieldPanel), 0, 0, 4);
 	
 		buildMenuBar();
 		
@@ -142,31 +142,6 @@ public class MainWindow extends JFrame implements Runnable {
 			}
 		});
 		viewMenu.add(showGridLineItem);
-
-		viewMenu.add(new JSeparator());
-		
-		ButtonGroup buttonGroup = new ButtonGroup();
-		temp = new JRadioButtonMenuItem("Display as lines");
-		temp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				WindowProperties.renderMode = WindowProperties.RENDER_LINES;
-				WindowProperties.drawingPoints = false;
-				fieldPanel.repaint();
-			}
-		});
-		buttonGroup.add(temp);
-		viewMenu.add(temp);
-		temp = new JRadioButtonMenuItem("Display false color");
-		temp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				WindowProperties.renderMode = WindowProperties.RENDER_FALSE_COLOR;
-				WindowProperties.drawingPoints = true;
-				fieldPanel.repaint();
-			}
-		});
-		temp.setSelected(true);
-		buttonGroup.add(temp);
-		viewMenu.add(temp);
 		
 		menuBar.add(viewMenu);
 		

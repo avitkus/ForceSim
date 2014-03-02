@@ -43,16 +43,8 @@ public class FieldPanel extends JPanel {
 	private List<Vector2D> lineOrigins = new ArrayList<Vector2D>();
 
 	public FieldPanel() {
-		Point p = new Point(0,0);
-		p.setCharge(10);
-		field.addPoint(p);
-		//p = new Point(1,-1);
-		//p.setCharge(-10);
-		//field.addPoint(p);
 		setBackground(Color.white);
 		new FieldPanelListener(this);
-		
-		lineOrigins.add(new Vector2D(1, 1));
 	}
 	
 	@Override
@@ -270,6 +262,7 @@ public class FieldPanel extends JPanel {
 		}
 		p.setCharge(WindowProperties.currentChargeChoice);
 		field.addPoint(p);
+		lineOrigins.clear();
 	}
 	public void removePoint(IPoint p) {
 		field.removePoint(p);
@@ -291,6 +284,7 @@ public class FieldPanel extends JPanel {
 	
 	public void clear() {
 		field.clear();
+		lineOrigins.clear();
 		repaint();
 	}
 	
