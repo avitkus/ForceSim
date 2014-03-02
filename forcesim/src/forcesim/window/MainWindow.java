@@ -21,13 +21,13 @@ import forcesim.graphics.FieldPanel;
 
 
 @SuppressWarnings("serial")
-public class Window extends JFrame implements Runnable {
+public class MainWindow extends JFrame implements Runnable {
 
-	public Window() {
-		super("Awesome Title");
+	public MainWindow() {
+		super("ForceSim");
 	
 		setSize(310,400);
-		this.setMinimumSize(new Dimension(310, 0));
+		setMinimumSize(new Dimension(310, 400));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationByPlatform(true);
 		try {
@@ -155,6 +155,16 @@ public class Window extends JFrame implements Runnable {
 		viewMenu.add(temp);
 		
 		menuBar.add(viewMenu);
+		
+		JMenu aboutMenu = new JMenu("About");
+		temp = new JMenuItem("About ForceSim");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				javax.swing.SwingUtilities.invokeLater(new AboutWindow());
+			}
+		});
+		aboutMenu.add(temp);
+		menuBar.add(aboutMenu);
 		
 		setJMenuBar(menuBar);
 	}
