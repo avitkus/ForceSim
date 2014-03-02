@@ -19,7 +19,7 @@ import forcesim.window.WindowProperties;
 public class FieldPanel extends JPanel {
 
 	private final Color COLOR_POSITIVE = Color.red;
-	private final Color COLOR_NEGATIVE = Color.blue;
+	private final Color COLOR_NEGATIVE = new Color(0f,0.6f,1f);
 	
 	private final int RADIUS = 15;
 
