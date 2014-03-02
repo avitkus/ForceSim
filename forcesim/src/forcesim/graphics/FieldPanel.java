@@ -2,8 +2,15 @@ package forcesim.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import forcesim.field.physics.ElectromagneticForce;
 import forcesim.field.physics.Field;
@@ -145,4 +152,53 @@ public class FieldPanel extends JPanel {
 		p.setCharge(WindowProperties.currentChargeChoice);
 		field.addPoint(p);
 	}
+	
+	private class FieldPanelListener extends MouseAdapter {
+
+		public FieldPanelListener(FieldPanel fp) {
+			addMouseListener(this);
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent event) {
+			final IPoint p = getPointAt(event.getX(), event.getY());
+			if (event.getButton() == MouseEvent.BUTTON1) {
+				if (p == null) {
+					addPoint(event.getX(), event.getY());
+					repaint();
+				}
+			} else if (event.getButton() == MouseEvent.BUTTON3) {
+				if (p != null) {
+					JPopupMenu popup = new JPopupMenu();
+					JMenuItem changeChargeMenu = new JMenuItem("Change charge");
+					changeChargeMenu.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							boolean failAtLife = false;
+							do {
+								failAtLife = false;
+								String response = JOptionPane.showInputDialog(FieldPanel.this, "What is the new charge?", "Enter a number.", JOptionPane.QUESTION_MESSAGE);
+				                if (response == null) {
+				                    return;
+				                }
+				                try {
+				                	p.setCharge(Double.parseDouble(response));
+				                	repaint();
+				                } catch (NumberFormatException ex) {
+				                	JOptionPane.showMessageDialog(FieldPanel.this, "Charge must be a number", "Invalid charge!", JOptionPane.ERROR_MESSAGE);
+				                	failAtLife = true;
+				                }
+							} while (failAtLife);
+						}
+						
+					});
+					popup.add(changeChargeMenu);
+					
+					popup.show(event.getComponent(), event.getX(), event.getY());
+				}
+			}
+		}
+	}
+
 }

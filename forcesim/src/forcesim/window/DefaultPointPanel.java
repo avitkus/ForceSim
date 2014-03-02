@@ -1,7 +1,6 @@
 package forcesim.window;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
@@ -32,21 +31,37 @@ public class DefaultPointPanel extends JPanel {
 		JPanel panel = new JPanel();
     	for(int i = 1; i <= 5; i ++) {
             panel.setBorder(BorderFactory.createTitledBorder("Positive Charge"));
-    		JRadioButton button = buildChoiceButton(i);
+    		final JRadioButton button = buildChoiceButton(i);
     		buttons.add(button);
     		panel.add(button);
-    		ImageIcon img = createImageIcon("/images/" + i + "+.png");
-    		panel.add(new JLabel(img));
+    		ImageIcon img = createImageIcon("/images/" + i + "+.png");;
+    		JLabel imageLbl = new JLabel(img);
+    		imageLbl.addMouseListener(new MouseAdapter() {
+
+    			@Override
+    			public void mouseClicked(MouseEvent event) {
+    				button.setSelected(true);
+    			}
+        	});
+    		panel.add(imageLbl);
     	}
 		addComponent(panel, 0, 0);
 		panel = new JPanel();
     	for(int i = 1; i <= 5; i ++) {
             panel.setBorder(BorderFactory.createTitledBorder("Negative Charge"));
-    		JRadioButton button = buildChoiceButton(-i);
+    		final JRadioButton button = buildChoiceButton(-i);
     		buttons.add(button);
     		panel.add(button);
     		ImageIcon img = createImageIcon("/images/" + i + "-.png");
-    		panel.add(new JLabel(img));
+    		JLabel imageLbl = new JLabel(img);
+    		imageLbl.addMouseListener(new MouseAdapter() {
+
+    			@Override
+    			public void mouseClicked(MouseEvent event) {
+    				button.setSelected(true);
+    			}
+        	});
+    		panel.add(imageLbl);
     	}
 		addComponent(panel, 0, 1);
     }
