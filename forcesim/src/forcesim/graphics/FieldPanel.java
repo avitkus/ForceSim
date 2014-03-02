@@ -58,7 +58,7 @@ public class FieldPanel extends JPanel {
 			if (f > maxCharge) maxCharge = f;
 		}
 		Point p;
-		
+		long time = System.currentTimeMillis();
 		double[][] charges = new double[getWidth()][getHeight()];
 		for (int x=0; x<getWidth(); x++) {
 			for (int y=0; y<getHeight(); y++) {
@@ -67,7 +67,8 @@ public class FieldPanel extends JPanel {
 				charges[x][y] = charge;
 			}
 		}
-		System.out.println("HAHAHAH "+maxCharge);
+		System.out.println("REPAINT "+(System.currentTimeMillis()-time));
+		time = System.currentTimeMillis();
 		for (int x=0; x<getWidth(); x++) {
 			for (int y=0; y<getHeight(); y++) {
 				//System.out.println(charges[x][y]);
@@ -79,6 +80,7 @@ public class FieldPanel extends JPanel {
 				}
 			}
 		}
+		System.out.println("AGAIN "+(System.currentTimeMillis()-time));
 	}
 
 	private void renderPoint(Graphics g, IPoint p) {
@@ -121,13 +123,14 @@ public class FieldPanel extends JPanel {
 			Vector2D v = Util.convertFieldCoordinate(this, p);
 			int dx = (int)v.getX() - x;
 			int dy = (int)v.getY() - y;
-			System.out.println("WAAA "+dx+" "+dy);
 			if (dx*dx + dy*dy < RADIUS*RADIUS) return p;
 		}
 		return null;
 	}
 	
 	public void addPoint(int x, int y) {
-		//field.addPoint(p);
+		IPoint p = Util.convertPixelCoordinate(this,x,y);
+		p.setCharge(WindowProperties.currentChargeChoice);
+		field.addPoint(p);
 	}
 }
