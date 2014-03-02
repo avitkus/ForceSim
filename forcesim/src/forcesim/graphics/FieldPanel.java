@@ -86,6 +86,7 @@ public class FieldPanel extends JPanel {
 		}
 	}
 	private void renderLine(Graphics g, IVector2D vf1) {
+		g.setColor(Color.black);
 		IVector2D vclone = vf1;
 		IVector2D vf2 = vf1;
 		IVector2D vp1 = Util.convertFieldCoordinate(this, vf1);
