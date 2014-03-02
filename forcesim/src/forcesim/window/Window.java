@@ -1,5 +1,6 @@
 package forcesim.window;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -25,7 +26,8 @@ public class Window extends JFrame implements Runnable {
 	public Window() {
 		super("Awesome Title");
 	
-		setSize(400,400);
+		setSize(310,400);
+		this.setMinimumSize(new Dimension(310, 0));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationByPlatform(true);
 		try {
