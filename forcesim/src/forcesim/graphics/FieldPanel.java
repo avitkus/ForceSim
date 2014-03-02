@@ -46,9 +46,9 @@ public class FieldPanel extends JPanel {
 		Point p = new Point(0,0);
 		p.setCharge(10);
 		field.addPoint(p);
-		p = new Point(1,-1);
-		p.setCharge(-10);
-		field.addPoint(p);
+		//p = new Point(1,-1);
+		//p.setCharge(-10);
+		//field.addPoint(p);
 		setBackground(Color.white);
 		new FieldPanelListener(this);
 		
@@ -59,30 +59,31 @@ public class FieldPanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		FieldImage.resize(getWidth(), getHeight());
+		Graphics gg = FieldImage.getImage().getGraphics();
 		if (WindowProperties.renderMode == WindowProperties.RENDER_FALSE_COLOR) {
-			renderField(g);
+			renderField(gg);
 			if (WindowProperties.displayGrid) {
-				renderGridLines(g);
+				renderGridLines(gg);
 			}
 		} else {
 			if (WindowProperties.displayGrid) {
-				renderGridLines(g);
+				renderGridLines(gg);
 			}
-			renderLines(g);
+			renderLines(gg);
 		}
 		
 		for (IPoint p: field.getPoints()) {
-			renderPoint(g, p);
+			renderPoint(gg, p);
 		}
+
+		g.drawImage(FieldImage.getImage(), 0, 0, Color.WHITE, null);
 	}
 
 	private void renderLines(Graphics g) {
 		if (field.getPoints().length == 0) return; 
-		System.out.println("<lines>");
 		for (Vector2D l: lineOrigins) {
 			renderLine(g, l);
 		}
-		System.out.println("</lines>");
 	}
 	private void renderLine(Graphics g, IVector2D vf1) {
 		IVector2D vclone = vf1;
@@ -90,7 +91,6 @@ public class FieldPanel extends JPanel {
 		IVector2D vp1 = Util.convertFieldCoordinate(this, vf1);
 		IVector2D vp2 = Util.convertFieldCoordinate(this, vf2);
 		while (isValid(vp1)) {
-			System.out.println("<"+vf1.getX()+", "+vf2.getY()+">");
 			IVector2D v = field.getElectromagneticField(vf1.getX(), vf1.getY());
 			v = v.scale(.05/v.getMagnitude());
 			vf2 = vf1.sum(v);
@@ -102,7 +102,6 @@ public class FieldPanel extends JPanel {
 		vf1 = vclone;
 		vp1 = Util.convertFieldCoordinate(this, vf1);
 		while (isValid(vp1)) {
-			System.out.println("<"+vf1.getX()+", "+vf2.getY()+">");
 			IVector2D v = field.getElectromagneticField(vf1.getX(), vf1.getY());
 			v = v.scale(-.05/v.getMagnitude());
 			vf2 = vf1.sum(v);
@@ -149,7 +148,6 @@ public class FieldPanel extends JPanel {
 		}
 		//System.out.println("Fill pic time "+(System.currentTimeMillis()-time));
 		//time = System.currentTimeMillis();
-		g.drawImage(FieldImage.getImage(), 0, 0, Color.WHITE, null);
 		//System.out.println("Paint time "+(System.currentTimeMillis()-time));
 	}
 	
@@ -274,6 +272,11 @@ public class FieldPanel extends JPanel {
 		field.removePoint(p);
 	}
 	
+	public void addLine(int x, int y) {
+		Point p = Util.convertPixelCoordinate(this, x, y);
+		lineOrigins.add(new Vector2D(p.getX(), p.getY()));
+	}
+	
 	private class FieldPanelListener extends MouseAdapter {
 
 		public FieldPanelListener(FieldPanel fp) {
@@ -285,7 +288,11 @@ public class FieldPanel extends JPanel {
 			final IPoint p = getPointAt(event.getX(), event.getY());
 			if (event.getButton() == MouseEvent.BUTTON1) {
 				if (p == null) {
-					addPoint(event.getX(), event.getY());
+					if (WindowProperties.drawingPoints) {
+						addPoint(event.getX(), event.getY());
+					} else {
+						addLine(event.getX(), event.getY());
+					}
 					repaint();
 				}
 			} else if (event.getButton() == MouseEvent.BUTTON3) {
