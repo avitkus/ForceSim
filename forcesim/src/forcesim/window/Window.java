@@ -135,6 +135,7 @@ public class Window extends JFrame implements Runnable {
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WindowProperties.renderMode = WindowProperties.RENDER_LINES;
+				repaint();
 			}
 		});
 		buttonGroup.add(temp);
@@ -143,6 +144,7 @@ public class Window extends JFrame implements Runnable {
 		temp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WindowProperties.renderMode = WindowProperties.RENDER_FALSE_COLOR;
+				repaint();
 			}
 		});
 		temp.setSelected(true);
