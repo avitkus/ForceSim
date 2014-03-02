@@ -104,7 +104,7 @@ public class Window extends JFrame implements Runnable {
 				repaint();
 			}
 		});
-		snapToGridItem.setSelected(true);
+		snapToGridItem.setSelected(true);	
 		editMenu.add(snapToGridItem);
 		
 		editMenu.add(new JSeparator());
