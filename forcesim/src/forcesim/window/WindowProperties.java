@@ -11,4 +11,6 @@ public class WindowProperties {
 	public static int scale = 40; // pixels per meter
 	
 	public static ForceType type = ForceType.ELECTROMAGNETIC;
+	
+	public static double currentChargeChoice = 1;
 }

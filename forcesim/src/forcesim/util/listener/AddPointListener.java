@@ -1,5 +1,7 @@
 package forcesim.util.listener;
 
-public interface AddPointListener {
+import java.util.EventListener;
+
+public interface AddPointListener extends EventListener {
 	public void addPoint(PointAddedEvent event);
 }

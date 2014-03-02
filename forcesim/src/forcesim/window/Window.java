@@ -1,4 +1,7 @@
 package forcesim.window;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +33,10 @@ public class Window extends JFrame implements Runnable {
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 		}
 	
-		add(new FieldPanel());
+        setLayout(new GridBagLayout());
+		
+        addComponent(new FieldPanel(), 2, 0, 0);
+        addComponent(new DefaultPointPanel(), 1, 0, 4);
 	
 		buildMenuBar();
 			
@@ -109,6 +115,18 @@ public class Window extends JFrame implements Runnable {
 		
 		setJMenuBar(menuBar);
 	}
+	
+	private void addComponent(Component component, int weighty, int x, int y) {
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = weighty;
+        c.gridx = x;
+        c.gridy = y;
+
+        add(component, c);
+    }
 
 	@Override
 	public void run() {

@@ -5,21 +5,37 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.event.EventListenerList;
 
 @SuppressWarnings("serial")
 public class DefaultPointPanel extends JPanel {
     private final EventListenerList listenerList;
     
-    private final double[] DEFAULT_CHARGE_VALUES = {1, 2, 3, 4, 5, -1, -2, -3, -4, -5};
-    
     public DefaultPointPanel() {
     	listenerList = new EventListenerList();
         setLayout(new GridBagLayout());
+        switch (WindowProperties.type) {
+        	case ELECTROMAGNETIC:
+        		buildEMPanel();
+        		break;
+        }
     }
     
     private void buildEMPanel() {
     	
+    }
+    
+    private JRadioButton buildChoiceButton(double value) {
+    	String text = "";
+    	switch (WindowProperties.type) {
+	    	case ELECTROMAGNETIC:
+	    		buildEMPanel();
+	    		break;
+    	}
+    	JRadioButton button = new JRadioButton(Double.toString(value));
+    	
+    	return null;
     }
     
     private void addComponent(Component component, int x, int y) {
@@ -37,5 +53,4 @@ public class DefaultPointPanel extends JPanel {
 
         add(component, c);
     }
-    
 }
