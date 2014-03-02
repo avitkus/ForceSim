@@ -20,6 +20,7 @@ public class FieldSaveFileReader {
 			String[] values = br.readLine().split(",");
 			loadWindowProperties(heads, values);
 			
+			heads = br.readLine().split(",");
 			while(br.ready()) {
 				System.out.println("a point");
 				values = br.readLine().split(",");
