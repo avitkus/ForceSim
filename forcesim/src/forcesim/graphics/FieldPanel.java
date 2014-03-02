@@ -7,13 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JMenuItem;
@@ -25,6 +24,7 @@ import forcesim.field.physics.ElectromagneticForce;
 import forcesim.field.physics.Field;
 import forcesim.field.physics.IField;
 import forcesim.field.physics.IPoint;
+import forcesim.field.physics.IVector2D;
 import forcesim.field.physics.Point;
 import forcesim.field.physics.Vector2D;
 import forcesim.util.Util;
@@ -39,38 +39,91 @@ public class FieldPanel extends JPanel {
 	private final int RADIUS = 15;
 
 	private final IField field = new Field();
+	
+	private List<Vector2D> lineOrigins = new ArrayList<Vector2D>();
 
 	public FieldPanel() {
 		Point p = new Point(0,0);
 		p.setCharge(10);
 		field.addPoint(p);
-		p = new Point(1,-1);
-		p.setCharge(-10);
-		field.addPoint(p);
+		//p = new Point(1,-1);
+		//p.setCharge(-10);
+		//field.addPoint(p);
 		setBackground(Color.white);
 		new FieldPanelListener(this);
+		
+		lineOrigins.add(new Vector2D(1, 1));
 	}
 	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		FieldImage.resize(getWidth(), getHeight());
+		Graphics gg = FieldImage.getImage().getGraphics();
 		if (WindowProperties.renderMode == WindowProperties.RENDER_FALSE_COLOR) {
-			renderField(g);
+			renderField(gg);
 			if (WindowProperties.displayGrid) {
-				renderGridLines(g);
+				renderGridLines(gg);
 			}
 		} else {
 			if (WindowProperties.displayGrid) {
-				renderGridLines(g);
+				renderGridLines(gg);
 			}
+			renderLines(gg);
 		}
 		
 		for (IPoint p: field.getPoints()) {
-			renderPoint(g, p);
+			renderPoint(gg, p);
 		}
+
+		g.drawImage(FieldImage.getImage(), 0, 0, Color.WHITE, null);
 	}
 
+	private void renderLines(Graphics g) {
+		if (field.getPoints().length == 0) return; 
+		for (Vector2D l: lineOrigins) {
+			renderLine(g, l);
+		}
+	}
+	private void renderLine(Graphics g, IVector2D vf1) {
+		IVector2D vclone = vf1;
+		IVector2D vf2 = vf1;
+		IVector2D vp1 = Util.convertFieldCoordinate(this, vf1);
+		IVector2D vp2 = Util.convertFieldCoordinate(this, vf2);
+		while (isValid(vp1)) {
+			IVector2D v = field.getElectromagneticField(vf1.getX(), vf1.getY());
+			v = v.scale(.05/v.getMagnitude());
+			vf2 = vf1.sum(v);
+			vp1 = Util.convertFieldCoordinate(this, vf1);
+			vp2 = Util.convertFieldCoordinate(this, vf2);
+			g.drawLine((int)vp1.getX(), (int)vp1.getY(), (int)vp2.getX(), (int)vp2.getY());
+			vf1 = vf2;
+		}
+		vf1 = vclone;
+		vp1 = Util.convertFieldCoordinate(this, vf1);
+		while (isValid(vp1)) {
+			IVector2D v = field.getElectromagneticField(vf1.getX(), vf1.getY());
+			v = v.scale(-.05/v.getMagnitude());
+			vf2 = vf1.sum(v);
+			vp1 = Util.convertFieldCoordinate(this, vf1);
+			vp2 = Util.convertFieldCoordinate(this, vf2);
+			g.drawLine((int)vp1.getX(), (int)vp1.getY(), (int)vp2.getX(), (int)vp2.getY());
+			vf1 = vf2;
+		}
+	}
+	private boolean isValid (IVector2D v) {
+		if (!(0 < v.getX() && v.getX() < getWidth()) && (0 < v.getY() && v.getY() < getWidth())) return false;
+		for (IPoint p : field.getPoints()) {
+			IVector2D vv = Util.convertFieldCoordinate(this, p);
+			int dx = (int)(vv.getX() - v.getX());
+			int dy = (int)(vv.getY() - v.getY());
+			if (dx*dx + dy*dy < RADIUS*RADIUS) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private void renderField(Graphics g) {
 		double maxCharge = 0;
 		
@@ -95,7 +148,6 @@ public class FieldPanel extends JPanel {
 		}
 		//System.out.println("Fill pic time "+(System.currentTimeMillis()-time));
 		//time = System.currentTimeMillis();
-		g.drawImage(FieldImage.getImage(), 0, 0, Color.WHITE, null);
 		//System.out.println("Paint time "+(System.currentTimeMillis()-time));
 	}
 	
@@ -220,6 +272,11 @@ public class FieldPanel extends JPanel {
 		field.removePoint(p);
 	}
 	
+	public void addLine(int x, int y) {
+		Point p = Util.convertPixelCoordinate(this, x, y);
+		lineOrigins.add(new Vector2D(p.getX(), p.getY()));
+	}
+	
 	private class FieldPanelListener extends MouseAdapter {
 
 		public FieldPanelListener(FieldPanel fp) {
@@ -231,7 +288,11 @@ public class FieldPanel extends JPanel {
 			final IPoint p = getPointAt(event.getX(), event.getY());
 			if (event.getButton() == MouseEvent.BUTTON1) {
 				if (p == null) {
-					addPoint(event.getX(), event.getY());
+					if (WindowProperties.drawingPoints) {
+						addPoint(event.getX(), event.getY());
+					} else {
+						addLine(event.getX(), event.getY());
+					}
 					repaint();
 				}
 			} else if (event.getButton() == MouseEvent.BUTTON3) {
