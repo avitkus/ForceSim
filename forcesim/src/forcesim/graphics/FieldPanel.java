@@ -12,6 +12,7 @@ import forcesim.field.physics.IPoint;
 import forcesim.field.physics.Point;
 import forcesim.field.physics.Vector2D;
 import forcesim.util.Util;
+import forcesim.util.listener.FieldPanelListener;
 import forcesim.window.WindowProperties;
 
 @SuppressWarnings("serial")
@@ -31,6 +32,8 @@ public class FieldPanel extends JPanel {
 		p = new Point(1,-1);
 		p.setCharge(-10);
 		field.addPoint(p);
+		
+		new FieldPanelListener(this);
 	}
 	
 	@Override
@@ -49,7 +52,6 @@ public class FieldPanel extends JPanel {
 		double maxCharge = 0;
 		
 		for (IPoint p : field.getPoints()) {
-			Vector2D v = Util.convertFieldCoordinate(this, p);
 			IPoint p2 = new Point(p.getX(), p.getY()+(((double)RADIUS-1)/WindowProperties.scale));
 			p2.setCharge(1);
 			double f = ElectromagneticForce.getVector(p, p2).getMagnitude();
@@ -112,5 +114,20 @@ public class FieldPanel extends JPanel {
 		g.setColor(c);
 		radius = radius-2;
 		g.fillOval((int)center.getX()-radius, (int)center.getY()-radius, 2*radius, 2*radius);
+	}
+	
+	public IPoint getPointAt(int x, int y) {
+		for (IPoint p : field.getPoints()) {
+			Vector2D v = Util.convertFieldCoordinate(this, p);
+			int dx = (int)v.getX() - x;
+			int dy = (int)v.getY() - y;
+			System.out.println("WAAA "+dx+" "+dy);
+			if (dx*dx + dy*dy < RADIUS*RADIUS) return p;
+		}
+		return null;
+	}
+	
+	public void addPoint(int x, int y) {
+		//field.addPoint(p);
 	}
 }
