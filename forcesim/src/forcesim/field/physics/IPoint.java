@@ -14,4 +14,6 @@ public interface IPoint {
 	
 	public double getDistanceTo(IPoint p);
 	public double getAngleTo(IPoint p);
+	
+	public IPoint clone();
 }

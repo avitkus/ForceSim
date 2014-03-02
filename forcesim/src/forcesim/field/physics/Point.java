@@ -54,4 +54,10 @@ public class Point implements IPoint {
 		return Math.atan2(y - p.getY(), x - p.getX());
 	}
 
+	@Override
+	public IPoint clone() {
+		Point ret = new Point(x, y);
+		ret.setCharge(charge);
+		return ret;
+	}
 }
