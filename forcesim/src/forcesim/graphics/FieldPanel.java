@@ -72,7 +72,6 @@ public class FieldPanel extends JPanel {
 	}
 
 	private void renderField(Graphics g) {
-		double charge;
 		double maxCharge = 0;
 		
 		for (IPoint p : field.getPoints()) {
@@ -81,34 +80,23 @@ public class FieldPanel extends JPanel {
 			double f = ElectromagneticForce.getVector(p, p2).getMagnitude();
 			if (f > maxCharge) maxCharge = f;
 		}
-		Point p;
-		long time = System.currentTimeMillis();
-		double[][] charges = getCharges();//new double[getWidth()][getHeight()];
-		/*for (int x=0; x<getWidth(); x++) {
-			for (int y=0; y<getHeight(); y++) {
-				p = Util.convertPixelCoordinate(this, x, y);
-				charge = field.getElectromagneticField(p.getX(), p.getY()).getMagnitude();
-				charges[x][y] = charge;
-			}
-		}*/
-		//System.out.println("REPAINT "+(System.currentTimeMillis()-time));
-		time = System.currentTimeMillis();
+		//long time = System.currentTimeMillis();
+		double[][] charges = getCharges();
+		//System.out.println("Calc time "+(System.currentTimeMillis()-time));
+		//time = System.currentTimeMillis();
 		for (int x=0; x<getWidth(); x++) {
 			for (int y=0; y<getHeight(); y++) {
 				//System.out.println(charges[x][y]);
 				if (charges[x][y] < maxCharge) {
-					//float cor = (float)(charges[x][y]/maxCharge);
 					float cor = (float)Math.log10(9*Math.sqrt(Math.log10(9*(charges[x][y]/maxCharge)+1))+1);
-					
-					//FieldImage.setColor(x, y, new int[]{Math.round(cor * 255), 0, 0, 255});
 					FieldImage.setColor(x, y, (Math.round(cor * 255)<<24) + (255<<16));
-					//g.setColor(new Color(1f,1f-cor,1f-cor));
-					//g.drawLine(x, y, x, y);
 				}
 			}
 		}
+		//System.out.println("Fill pic time "+(System.currentTimeMillis()-time));
+		//time = System.currentTimeMillis();
 		g.drawImage(FieldImage.getImage(), 0, 0, Color.WHITE, null);
-		//System.out.println("AGAIN "+(System.currentTimeMillis()-time));
+		//System.out.println("Paint time "+(System.currentTimeMillis()-time));
 	}
 	
 	private double[][] getCharges() {
@@ -187,12 +175,12 @@ public class FieldPanel extends JPanel {
 	}
 	
 	private void renderGridLines(Graphics g) {
-		System.out.println("WAAAAAT");
+		//System.out.println("WAAAAAT");
 		g.setColor(Color.gray);
 		int s = WindowProperties.scale;
 		int x_lim = ((getWidth()/2)%s)-s;
 		int y_lim = ((getHeight()/2)%s)-s;
-		System.out.println(x_lim+" "+y_lim);
+		//System.out.println(x_lim+" "+y_lim);
 		for (int x=x_lim; x<getWidth(); x+=s) {
 			g.drawLine(x, 0, x, getHeight());
 		}
