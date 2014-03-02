@@ -19,7 +19,6 @@ import forcesim.field.physics.IPoint;
 import forcesim.field.physics.Point;
 import forcesim.field.physics.Vector2D;
 import forcesim.util.Util;
-import forcesim.util.listener.FieldPanelListener;
 import forcesim.window.WindowProperties;
 
 @SuppressWarnings("serial")
