@@ -38,14 +38,13 @@ public class FieldPanel extends JPanel {
 		p = new Point(1,-1);
 		p.setCharge(-10);
 		field.addPoint(p);
-		
+		setBackground(Color.white);
 		new FieldPanelListener(this);
 	}
 	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		
 		if (WindowProperties.renderMode == WindowProperties.RENDER_FALSE_COLOR) {
 			renderField(g);
 			if (WindowProperties.displayGrid) {
@@ -176,6 +175,9 @@ public class FieldPanel extends JPanel {
 		p.setCharge(WindowProperties.currentChargeChoice);
 		field.addPoint(p);
 	}
+	public void removePoint(IPoint p) {
+		field.removePoint(p);
+	}
 	
 	private class FieldPanelListener extends MouseAdapter {
 
@@ -194,6 +196,15 @@ public class FieldPanel extends JPanel {
 			} else if (event.getButton() == MouseEvent.BUTTON3) {
 				if (p != null) {
 					JPopupMenu popup = new JPopupMenu();
+					JMenuItem removePointMenu = new JMenuItem("Remove point");
+					removePointMenu.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							removePoint(p);
+							repaint();
+						}
+					});
+					popup.add(removePointMenu);
+					
 					JMenuItem changeChargeMenu = new JMenuItem("Change charge");
 					changeChargeMenu.addActionListener(new ActionListener() {
 

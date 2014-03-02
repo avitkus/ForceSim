@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -40,7 +42,7 @@ public class DefaultPointPanel extends JPanel {
 
     			@Override
     			public void mouseClicked(MouseEvent event) {
-    				button.setSelected(true);
+    				button.doClick();
     			}
         	});
     		panel.add(imageLbl);
@@ -59,6 +61,7 @@ public class DefaultPointPanel extends JPanel {
     			@Override
     			public void mouseClicked(MouseEvent event) {
     				button.setSelected(true);
+    				button.doClick();
     			}
         	});
     		panel.add(imageLbl);
@@ -69,10 +72,10 @@ public class DefaultPointPanel extends JPanel {
     private JRadioButton buildChoiceButton(final int value) {
     	final JRadioButton button = new JRadioButton("");
     	
-    	button.addMouseListener(new MouseAdapter() {
+    	button.addActionListener(new ActionListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent event) {
+			public void actionPerformed(ActionEvent event) {
 				switch (WindowProperties.type) {
 			    	case ELECTROMAGNETIC:
 			    		WindowProperties.currentChargeChoice = value;
