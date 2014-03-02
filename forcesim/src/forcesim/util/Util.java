@@ -1,12 +1,19 @@
 package forcesim.util;
 
 import forcesim.field.physics.IPoint;
+import forcesim.field.physics.IVector2D;
 import forcesim.field.physics.Point;
 import forcesim.field.physics.Vector2D;
 import forcesim.graphics.FieldPanel;
 import forcesim.window.WindowProperties;
 
 public class Util {
+	public static Vector2D convertFieldCoordinate(FieldPanel fp, IVector2D v) {
+		return new Vector2D(
+				v.getX()*WindowProperties.scale + fp.getWidth()/2,
+				v.getY()*WindowProperties.scale + fp.getHeight()/2
+				);
+	}
 	public static Vector2D convertFieldCoordinate(FieldPanel fp, IPoint p) {
 		return new Vector2D(
 				p.getX()*WindowProperties.scale + fp.getWidth()/2,
