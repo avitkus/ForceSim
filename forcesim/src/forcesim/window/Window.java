@@ -97,7 +97,7 @@ public class Window extends JFrame implements Runnable {
 
 		JMenu editMenu = new JMenu("Edit");
 		final JCheckBoxMenuItem snapToGridItem = new JCheckBoxMenuItem("Snap to grid lines");
-		temp.addActionListener(new ActionListener() {
+		snapToGridItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WindowProperties.snapToGrid = snapToGridItem.isSelected();
 				System.out.println("Snap to grid lines");
@@ -119,7 +119,7 @@ public class Window extends JFrame implements Runnable {
 
 		JMenu viewMenu = new JMenu("View");
 		final JCheckBoxMenuItem showGridLineItem = new JCheckBoxMenuItem("Show grid lines");
-		temp.addActionListener(new ActionListener() {
+		showGridLineItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WindowProperties.displayGrid = showGridLineItem.isSelected();
 				System.out.println("Toggle dem grid lines");

@@ -45,8 +45,18 @@ public class FieldPanel extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-
-		renderField(g);
+		
+		if (WindowProperties.renderMode == WindowProperties.RENDER_FALSE_COLOR) {
+			renderField(g);
+			if (WindowProperties.displayGrid) {
+				renderGridLines(g);
+			}
+		} else {
+			if (WindowProperties.displayGrid) {
+				renderGridLines(g);
+			}
+			// TODO
+		}
 		
 		for (IPoint p: field.getPoints()) {
 			renderPoint(g, p);
@@ -122,6 +132,21 @@ public class FieldPanel extends JPanel {
 		g.setColor(c);
 		radius = radius-2;
 		g.fillOval((int)center.getX()-radius, (int)center.getY()-radius, 2*radius, 2*radius);
+	}
+	
+	private void renderGridLines(Graphics g) {
+		System.out.println("WAAAAAT");
+		g.setColor(Color.gray);
+		int s = WindowProperties.scale;
+		int x_lim = ((getWidth()/2)%s)-s;
+		int y_lim = ((getHeight()/2)%s)-s;
+		System.out.println(x_lim+" "+y_lim);
+		for (int x=x_lim; x<getWidth(); x+=s) {
+			g.drawLine(x, 0, x, getHeight());
+		}
+		for (int y=y_lim; y<getHeight(); y+=s) {
+			g.drawLine(0, y, getWidth(), y);
+		}
 	}
 	
 	public IPoint getPointAt(int x, int y) {
