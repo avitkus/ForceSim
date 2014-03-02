@@ -2,7 +2,6 @@ package forcesim.window;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -109,6 +108,16 @@ public class Window extends JFrame implements Runnable {
 		});
 		temp.setSelected(true);
 		buttonGroup.add(temp);
+		viewMenu.add(temp);
+		
+		temp = new JMenuItem("Show grid lines");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				WindowProperties.displayGrid = !WindowProperties.displayGrid;
+				System.out.println("Toggle dem grid lines");
+				repaint();
+			}
+		});
 		viewMenu.add(temp);
 		menuBar.add(viewMenu);
 		
