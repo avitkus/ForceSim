@@ -34,6 +34,9 @@ public class DefaultPointPanel extends JPanel {
     	for(int i = 1; i <= 5; i ++) {
             panel.setBorder(BorderFactory.createTitledBorder("Positive Charge"));
     		final JRadioButton button = buildChoiceButton(i);
+    		if (i == 1) {
+    			button.setSelected(true);
+    		}
     		buttons.add(button);
     		panel.add(button);
     		ImageIcon img = createImageIcon("/images/" + i + "+.png");;
