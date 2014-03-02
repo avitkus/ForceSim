@@ -4,6 +4,10 @@ public class Point implements IPoint {
 	private double x, y;	//location
 	private double charge;	//charge magnitude
 	
+	public Point() {
+		this(0,0);
+	}
+	
 	public Point(double x, double y) {
 		this.x = x;
 		this.y = y;
@@ -59,5 +63,19 @@ public class Point implements IPoint {
 		Point ret = new Point(x, y);
 		ret.setCharge(charge);
 		return ret;
+	}
+	
+	@Override
+	public String dataStringHeader() {
+		return "x,y,charge";
+	}
+	
+	@Override
+	public String toDataString() {
+		StringBuilder data = new StringBuilder();
+		data.append(x).append(",");
+		data.append(y).append(",");
+		data.append(charge);
+		return data.toString();
 	}
 }

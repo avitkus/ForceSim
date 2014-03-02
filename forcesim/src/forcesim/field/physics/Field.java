@@ -35,4 +35,9 @@ public class Field implements IField {
 	public IPoint[] getPoints() {
 		return points.toArray(new IPoint[points.size()]);
 	}
+
+	@Override
+	public void clear() {
+		points.clear();
+	}
 }

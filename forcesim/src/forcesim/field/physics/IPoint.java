@@ -16,4 +16,7 @@ public interface IPoint {
 	public double getAngleTo(IPoint p);
 	
 	public IPoint clone();
+	
+	public String dataStringHeader();
+	public String toDataString();
 }

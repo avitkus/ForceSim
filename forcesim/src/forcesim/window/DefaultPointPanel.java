@@ -3,6 +3,7 @@ package forcesim.window;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,6 +71,33 @@ public class DefaultPointPanel extends JPanel {
     		panel.add(imageLbl);
     	}
 		addComponent(panel, 0, 1);
+		
+		panel = new JPanel(new GridLayout(2, 1));
+		buttons = new ButtonGroup();
+		panel.setBorder(BorderFactory.createTitledBorder("Render Mode"));
+		JRadioButton button = new JRadioButton("Draw Lines");
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				WindowProperties.renderMode = WindowProperties.RENDER_LINES;
+				WindowProperties.drawingPoints = false;
+			}
+    	});
+		buttons.add(button);
+		panel.add(button);
+		button = new JRadioButton("Fill False Color");
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				WindowProperties.renderMode = WindowProperties.RENDER_FALSE_COLOR;
+				WindowProperties.drawingPoints = true;
+			}
+    	});
+		buttons.add(button);
+		panel.add(button);
+		addComponent(panel, 2, 1, 0);
     }
     
     private JRadioButton buildChoiceButton(final int value) {
@@ -100,6 +128,19 @@ public class DefaultPointPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.weighty = 1;
+        c.gridx = x;
+        c.gridy = y;
+
+        add(component, c);
+    }
+	
+	private void addComponent(Component component, int height, int x, int y) {
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridheight = height;
         c.gridx = x;
         c.gridy = y;
 

@@ -38,7 +38,7 @@ public class FieldPanel extends JPanel {
 	
 	private final int RADIUS = 15;
 
-	private final IField field = new Field();
+	private IField field = new Field();
 	
 	private List<Vector2D> lineOrigins = new ArrayList<Vector2D>();
 
@@ -275,6 +275,20 @@ public class FieldPanel extends JPanel {
 	public void addLine(int x, int y) {
 		Point p = Util.convertPixelCoordinate(this, x, y);
 		lineOrigins.add(new Vector2D(p.getX(), p.getY()));
+	}
+	
+	public IField getField() {
+		return field;
+	}
+	
+	public void setField(IField field) {
+		this.field = field;
+		repaint();
+	}
+	
+	public void clear() {
+		field.clear();
+		repaint();
 	}
 	
 	private class FieldPanelListener extends MouseAdapter {

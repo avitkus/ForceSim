@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class ImageWriter {
+public class ImageFileWriter {
 	
 	public static void write(RenderedImage img, String format, String target) throws IOException {
 		write(img, format, new File(target));

@@ -6,4 +6,6 @@ public interface IField {
 	
 	public IVector2D getElectromagneticField(double x, double y);
 	public IPoint[] getPoints();
+	
+	public void clear();
 }
