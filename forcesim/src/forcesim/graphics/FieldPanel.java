@@ -6,6 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -45,6 +54,7 @@ public class FieldPanel extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		FieldImage.resize(getWidth(), getHeight());
 		if (WindowProperties.renderMode == WindowProperties.RENDER_FALSE_COLOR) {
 			renderField(g);
 			if (WindowProperties.displayGrid) {
@@ -54,7 +64,6 @@ public class FieldPanel extends JPanel {
 			if (WindowProperties.displayGrid) {
 				renderGridLines(g);
 			}
-			// TODO
 		}
 		
 		for (IPoint p: field.getPoints()) {
@@ -74,14 +83,14 @@ public class FieldPanel extends JPanel {
 		}
 		Point p;
 		long time = System.currentTimeMillis();
-		double[][] charges = new double[getWidth()][getHeight()];
-		for (int x=0; x<getWidth(); x++) {
+		double[][] charges = getCharges();//new double[getWidth()][getHeight()];
+		/*for (int x=0; x<getWidth(); x++) {
 			for (int y=0; y<getHeight(); y++) {
 				p = Util.convertPixelCoordinate(this, x, y);
 				charge = field.getElectromagneticField(p.getX(), p.getY()).getMagnitude();
 				charges[x][y] = charge;
 			}
-		}
+		}*/
 		//System.out.println("REPAINT "+(System.currentTimeMillis()-time));
 		time = System.currentTimeMillis();
 		for (int x=0; x<getWidth(); x++) {
@@ -90,12 +99,56 @@ public class FieldPanel extends JPanel {
 				if (charges[x][y] < maxCharge) {
 					//float cor = (float)(charges[x][y]/maxCharge);
 					float cor = (float)Math.log10(9*Math.sqrt(Math.log10(9*(charges[x][y]/maxCharge)+1))+1);
-					g.setColor(new Color(1f,1f-cor,1f-cor));
-					g.drawLine(x, y, x, y);
+					
+					//FieldImage.setColor(x, y, new int[]{Math.round(cor * 255), 0, 0, 255});
+					FieldImage.setColor(x, y, (Math.round(cor * 255)<<24) + (255<<16));
+					//g.setColor(new Color(1f,1f-cor,1f-cor));
+					//g.drawLine(x, y, x, y);
 				}
 			}
 		}
+		g.drawImage(FieldImage.getImage(), 0, 0, Color.WHITE, null);
 		//System.out.println("AGAIN "+(System.currentTimeMillis()-time));
+	}
+	
+	private double[][] getCharges() {
+		int cores = Runtime.getRuntime().availableProcessors();
+		int threads = cores * 2;
+	
+	    int total = getWidth() * getHeight();
+	    int size = total / threads;
+	    ExecutorService pool = Executors.newFixedThreadPool(threads);
+	    ArrayList<Future<Boolean>> futures = new ArrayList<>();
+		final double[][] charges = new double[getWidth()][getHeight()];
+	    for (final AtomicInteger start = new AtomicInteger(0); start.get() < total; start.addAndGet(size)) {
+	    	final int thisStart = start.get();
+	        final int end = Math.min(total, thisStart + size);
+	        
+	        futures.add(pool.submit(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					for (int i = thisStart; i < end; i++) {
+	                	int x = i % getWidth();
+	                	int y = i / getWidth();
+	    				Point p = Util.convertPixelCoordinate(FieldPanel.this, x, y);
+	    				double charge = field.getElectromagneticField(p.getX(), p.getY()).getMagnitude();
+	    				charges[x][y] = charge;
+					}
+    				
+    				return Boolean.TRUE;
+				}
+	        }));
+	    }
+	    for(Future<Boolean> future : futures) {
+	    	try {
+				future.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+	    }
+	    return charges;
 	}
 
 	private void renderPoint(Graphics g, IPoint p) {
