@@ -26,7 +26,6 @@ public class Window extends JFrame implements Runnable {
 	
 		setSize(400,400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		System.out.println("");
 		setLocationByPlatform(true);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -35,8 +34,8 @@ public class Window extends JFrame implements Runnable {
 	
         setLayout(new GridBagLayout());
 		
-        addComponent(new FieldPanel(), 2, 0, 0);
-        addComponent(new DefaultPointPanel(), 1, 0, 4);
+        addComponent(new FieldPanel(), 1, 0, 0);
+        addComponent(new DefaultPointPanel(), 0, 0, 4);
 	
 		buildMenuBar();
 			
