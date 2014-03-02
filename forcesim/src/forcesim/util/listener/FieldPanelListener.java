@@ -1,12 +1,12 @@
 package forcesim.util.listener;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import forcesim.field.physics.IPoint;
 import forcesim.graphics.FieldPanel;
 
-public class FieldPanelListener implements MouseListener {
+public class FieldPanelListener extends MouseAdapter {
 
 	private final FieldPanel fieldPanel;
 
@@ -28,21 +28,5 @@ public class FieldPanelListener implements MouseListener {
 				System.out.println("menu");
 			}
 		}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
 	}
 }

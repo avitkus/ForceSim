@@ -13,4 +13,7 @@ public class WindowProperties {
 	public static ForceType type = ForceType.ELECTROMAGNETIC;
 	
 	public static double currentChargeChoice = 1;
+	
+	public static boolean snapToGrid=true;
+	public static boolean displayGrid=false;
 }

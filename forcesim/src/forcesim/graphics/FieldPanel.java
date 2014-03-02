@@ -120,6 +120,14 @@ public class FieldPanel extends JPanel {
 	
 	public IPoint getPointAt(int x, int y) {
 		for (IPoint p : field.getPoints()) {
+			if (WindowProperties.snapToGrid) {
+				IPoint t = Util.convertPixelCoordinate(this, x, y);
+				t.setX(Math.round(t.getX()));
+				t.setY(Math.round(t.getY()));
+				Vector2D v = Util.convertFieldCoordinate(this, t);
+				x = (int)v.getX();
+				y = (int)v.getY();
+			}
 			Vector2D v = Util.convertFieldCoordinate(this, p);
 			int dx = (int)v.getX() - x;
 			int dy = (int)v.getY() - y;
@@ -129,7 +137,12 @@ public class FieldPanel extends JPanel {
 	}
 	
 	public void addPoint(int x, int y) {
+		System.out.println("AAAAAD");
 		IPoint p = Util.convertPixelCoordinate(this,x,y);
+		if (WindowProperties.snapToGrid) {
+			p.setX(Math.round(p.getX()));
+			p.setY(Math.round(p.getY()));
+		}
 		p.setCharge(WindowProperties.currentChargeChoice);
 		field.addPoint(p);
 	}
