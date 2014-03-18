@@ -1,5 +1,7 @@
 package forcesim.field.physics;
 
+import forcesim.field.physics.space.Vector2D;
+
 public class ElectromagneticForce {//Coulomb's 
 	private static final double COULOMBS_CONSTANT = 8987551787.3681764;
 	
@@ -16,6 +18,9 @@ public class ElectromagneticForce {//Coulomb's
 	
 	public static Vector2D getVector(IPoint p1, IPoint p2) {
 		double force = getForceMagnitude(p1, p2);
+		if (p1.getCharge() == p2.getCharge()) {
+			force *= -1;
+		}
 		double angle = p1.getAngleTo(p2);
 		return new Vector2D(force * Math.cos(angle), force * Math.sin(angle));
 	}

@@ -2,6 +2,9 @@ package forcesim.field.physics;
 
 import java.util.ArrayList;
 
+import forcesim.field.physics.space.IVector2D;
+import forcesim.field.physics.space.Vector2D;
+
 public class Field implements IField {
 	
 	private ArrayList<IPoint> points;

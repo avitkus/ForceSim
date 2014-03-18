@@ -24,9 +24,9 @@ import forcesim.field.physics.ElectromagneticForce;
 import forcesim.field.physics.Field;
 import forcesim.field.physics.IField;
 import forcesim.field.physics.IPoint;
-import forcesim.field.physics.IVector2D;
 import forcesim.field.physics.Point;
-import forcesim.field.physics.Vector2D;
+import forcesim.field.physics.space.IVector2D;
+import forcesim.field.physics.space.Vector2D;
 import forcesim.util.Util;
 import forcesim.window.WindowProperties;
 
@@ -90,7 +90,14 @@ public class FieldPanel extends JPanel {
 			vf2 = vf1.sum(v);
 			vp1 = Util.convertFieldCoordinate(this, vf1);
 			vp2 = Util.convertFieldCoordinate(this, vf2);
-			g.drawLine((int)vp1.getX(), (int)vp1.getY(), (int)vp2.getX(), (int)vp2.getY());
+			g.drawLine((int)Math.round(vp1.getX()), (int)Math.round(vp1.getY()), (int)Math.round(vp2.getX()), (int)Math.round(vp2.getY()));
+			int color = FieldImage.getColor((int)Math.round(vp2.getX()), (int)Math.round(vp2.getY()));
+			for(int i = 0; i < 4; i ++) {
+				int mask = 0xff;
+				System.out.printf("%d ", color & mask);
+				color >>= 8;
+			}
+			System.out.println();
 			vf1 = vf2;
 		}
 		vf1 = vclone;
@@ -120,13 +127,16 @@ public class FieldPanel extends JPanel {
 	}
 	
 	private void renderField(Graphics g) {
-		double maxCharge = 0;
+		double maxForce = 0;
 		
 		for (IPoint p : field.getPoints()) {
 			IPoint p2 = new Point(p.getX(), p.getY()+(((double)RADIUS-1)/WindowProperties.scale));
-			p2.setCharge(1);
-			double f = ElectromagneticForce.getVector(p, p2).getMagnitude();
-			if (f > maxCharge) maxCharge = f;
+			p2.setCharge(-1);
+			IVector2D emf = ElectromagneticForce.getVector(p, p2);
+			double f = emf.getMagnitude();
+			if (f > maxForce) {
+				maxForce = f;
+			}
 		}
 		//long time = System.currentTimeMillis();
 		double[][] charges = getCharges();
@@ -135,8 +145,8 @@ public class FieldPanel extends JPanel {
 		for (int x=0; x<getWidth(); x++) {
 			for (int y=0; y<getHeight(); y++) {
 				//System.out.println(charges[x][y]);
-				if (charges[x][y] < maxCharge) {
-					float cor = (float)Math.log10(9*Math.sqrt(Math.log10(9*(charges[x][y]/maxCharge)+1))+1);
+				if (charges[x][y] < maxForce) {
+					float cor = (float)Math.log10(9*Math.sqrt(Math.log10(9*(charges[x][y]/maxForce)+1))+1);
 					FieldImage.setColor(x, y, (Math.round(cor * 255)<<24) + (255<<16));
 				}
 			}
@@ -154,7 +164,7 @@ public class FieldPanel extends JPanel {
 	    int size = total / threads;
 	    ExecutorService pool = Executors.newFixedThreadPool(threads);
 	    ArrayList<Future<Boolean>> futures = new ArrayList<>();
-		final double[][] charges = new double[getWidth()][getHeight()];
+		final double[][] forces = new double[getWidth()][getHeight()];
 	    for (final AtomicInteger start = new AtomicInteger(0); start.get() < total; start.addAndGet(size)) {
 	    	final int thisStart = start.get();
 	        final int end = Math.min(total, thisStart + size);
@@ -166,8 +176,9 @@ public class FieldPanel extends JPanel {
 	                	int x = i % getWidth();
 	                	int y = i / getWidth();
 	    				Point p = Util.convertPixelCoordinate(FieldPanel.this, x, y);
-	    				double charge = field.getElectromagneticField(p.getX(), p.getY()).getMagnitude();
-	    				charges[x][y] = charge;
+	    				IVector2D emf = field.getElectromagneticField(p.getX(), p.getY());
+	    				double force = emf.getMagnitude();
+	    				forces[x][y] = force;
 					}
     				
     				return Boolean.TRUE;
@@ -183,7 +194,7 @@ public class FieldPanel extends JPanel {
 				e.printStackTrace();
 			}
 	    }
-	    return charges;
+	    return forces;
 	}
 
 	private void renderPoint(Graphics g, IPoint p) {

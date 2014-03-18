@@ -1,9 +1,9 @@
 package forcesim.util;
 
 import forcesim.field.physics.IPoint;
-import forcesim.field.physics.IVector2D;
 import forcesim.field.physics.Point;
-import forcesim.field.physics.Vector2D;
+import forcesim.field.physics.space.IVector2D;
+import forcesim.field.physics.space.Vector2D;
 import forcesim.graphics.FieldPanel;
 import forcesim.window.WindowProperties;
 

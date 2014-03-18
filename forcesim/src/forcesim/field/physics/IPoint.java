@@ -1,9 +1,8 @@
 package forcesim.field.physics;
 
-public interface IPoint {
-	public double getX();
-	public double getY();
-	
+import forcesim.field.physics.space.IPoint2D;
+
+public interface IPoint extends IPoint2D{
 	public void setX(double x);
 	public void setY(double y);
 
@@ -11,9 +10,6 @@ public interface IPoint {
 	public double getCharge();
 	
 	public void setCharge(double charge);
-	
-	public double getDistanceTo(IPoint p);
-	public double getAngleTo(IPoint p);
 	
 	public IPoint clone();
 	

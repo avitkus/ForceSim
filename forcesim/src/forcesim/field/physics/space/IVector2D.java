@@ -1,4 +1,4 @@
-package forcesim.field.physics;
+package forcesim.field.physics.space;
 
 public interface IVector2D {
 	public double getMagnitude();

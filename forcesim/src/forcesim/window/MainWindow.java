@@ -122,6 +122,20 @@ public class MainWindow extends JFrame implements Runnable {
 		snapToGridItem.setSelected(true);
 		editMenu.add(snapToGridItem);
 		
+		final JMenuItem pointerChargeMenuItem = new JCheckBoxMenuItem("Set Pointer Charge Negative");
+		pointerChargeMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (WindowProperties.pointerCharge > 0) {
+					pointerChargeMenuItem.setText("Set Pointer Charge Positive");
+				} else {
+					pointerChargeMenuItem.setText("Set Pointer Charge Negative");
+				}
+				WindowProperties.pointerCharge *= -1;
+			}
+		});
+		pointerChargeMenuItem.setSelected(true);
+		editMenu.add(pointerChargeMenuItem);
+		
 		editMenu.add(new JSeparator());
 		
 		temp = new JMenuItem("Clear");

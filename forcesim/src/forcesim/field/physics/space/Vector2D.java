@@ -1,4 +1,4 @@
-package forcesim.field.physics;
+package forcesim.field.physics.space;
 
 public class Vector2D implements IVector2D {
 	private double i;

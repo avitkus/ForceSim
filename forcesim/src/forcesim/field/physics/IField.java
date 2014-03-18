@@ -1,5 +1,7 @@
 package forcesim.field.physics;
 
+import forcesim.field.physics.space.IVector2D;
+
 public interface IField {
 	public void removePoint(IPoint p);
 	public void addPoint(IPoint p);
